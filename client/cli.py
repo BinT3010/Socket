@@ -93,12 +93,26 @@ def main():
                 client.type_cmd(parts[1].upper())
 
             elif action == "port":
-                mode = "PORT"
-                print("[CLI] Mode set to PORT (active)")
+                if not client:
+                    print("Not connected")
+                    continue
+                reply = client.control.send_cmd("PORT")
+                print(reply)
+
+                if reply.startswith("227"):
+                    mode = "PORT"
+                    print("[CLI] Mode set to PORT (active)")
 
             elif action == "pasv":
-                mode = "PASV"
-                print("[CLI] Mode set to PASV (passive)")
+                if not client:
+                    print("Not connected")
+                    continue
+                reply = client.control.send_cmd("PASV")
+                print(reply)
+
+                if reply.startswith("227"):
+                    mode = "PASV"
+                    print("[CLI] Mode set to PASV (passive)")
 
             elif action == "upload" or action == "stor":
                 if not client:
