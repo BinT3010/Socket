@@ -27,7 +27,7 @@ class HybridFTPClient:
             reply = self.control.send_cmd(f"PASS {password}")
             if self.control.get_reply_code(reply) == ReplyCode.LOGIN_SUCCESS:
                 self.logged_in = True
-                print(reply)
+                print("[CLIENT]", reply)
                 return True
         print(f"[Client] Login failed: {reply}")
         return False
