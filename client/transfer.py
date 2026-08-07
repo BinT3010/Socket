@@ -116,6 +116,44 @@ class TransferManager:
 
         return True
 
+    def list_dir(self, path: str = "", mode: str = "PORT") -> str:
+        """List remote directory contents via the data channel.
+ 
+        Same shape as retr(): the server sends the listing bytes to us
+        over the data connection, so this follows the same
+        setup -> send cmd -> recv -> close -> drain-completion-reply
+        sequence, just returning a decoded string instead of writing
+        a file to disk.
+        """
+        # Setup data connection
+        if mode == "PORT":
+            if not self._setup_port_mode(self._get_local_ip()):
+                return ""
+        else:
+            if not self._setup_pasv_mode():
+                return ""
+ 
+        # Send LIST command
+        reply = self.control.send_cmd(f"LIST {path}".strip())
+        if self.control.get_reply_code(reply) not in (ReplyCode.OPENING_DATA, ReplyCode.ACTION_OK):
+            print(f"[Transfer] LIST rejected: {reply}")
+            self.data.close()
+            return ""
+ 
+        # Receive the listing (server -> client, same direction as RETR)
+        listing_bytes = self.data.recv_reliable()
+        self.data.close()
+ 
+        # Same reason as in stor()/retr(): drain the server's
+        # post-transfer completion reply before issuing the next
+        # control command, or it desyncs subsequent replies.
+        completion_reply = self.control.read_reply()
+        print(f"[Transfer] LIST complete ({completion_reply})")
+ 
+        if not listing_bytes:
+            return ""
+        return listing_bytes.decode("utf-8", errors="replace")
+    
     def retr(self, remote_name: str, local_path: str, mode: str = "PORT") -> bool:
         """Download a file from server with hash verification."""
         # Setup data connection
