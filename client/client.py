@@ -1,6 +1,6 @@
 """
 Hybrid FTP Client - Main Entry Point.
-Sang's implementation focusing on PORT, TYPE, HASH, and reliable UDP.
+Implementation focusing on PORT, TYPE, HASH, and reliable UDP.
 """
 import sys
 from client.control_channel import ControlChannel
@@ -27,7 +27,7 @@ class HybridFTPClient:
             reply = self.control.send_cmd(f"PASS {password}")
             if self.control.get_reply_code(reply) == ReplyCode.LOGIN_SUCCESS:
                 self.logged_in = True
-                print("[CLIENT]", reply)
+                print("[Client]", reply)
                 return True
         print(f"[Client] Login failed: {reply}")
         return False
@@ -43,22 +43,22 @@ class HybridFTPClient:
     def cwd(self, path: str) -> str:
         return self.control.send_cmd(f"CWD {path}")
 
-    def list_dir(self, path: str = "") -> str:
-        return self.control.send_cmd(f"LIST {path}".strip())
+    def list_dir(self, path: str = "", mode: str = "PORT") -> str:
+        return self.transfer.list_dir(path, mode)
 
     def type_cmd(self, t: str) -> bool:
-        """Sang's Task #2: Set TYPE A (ASCII) or I (Binary)."""
+        """Task #2: Set TYPE A (ASCII) or I (Binary)."""
         return self.transfer.set_type(t)
 
     def upload(self, local_path: str, remote_name: str = None, mode: str = "PORT") -> bool:
-        """Sang's Task #3 + #4: Upload with hash check, supports image files."""
+        """Task #3 + #4: Upload with hash check, supports image files."""
         if not self.logged_in:
             print("[Client] Not logged in.")
             return False
         return self.transfer.stor(local_path, remote_name, mode)
 
     def download(self, remote_name: str, local_path: str, mode: str = "PORT") -> bool:
-        """Sang's Task #3 + #4: Download with hash check, supports image files."""
+        """Task #3 + #4: Download with hash check, supports image files."""
         if not self.logged_in:
             print("[Client] Not logged in.")
             return False
