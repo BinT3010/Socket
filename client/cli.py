@@ -10,23 +10,23 @@ from client.client import HybridFTPClient
 
 def print_help():
     print("""
-╔══════════════════════════════════════════════════════════════╗
-║                      HYBRID FTP CLIENT                       ║
-╠══════════════════════════════════════════════════════════════╣
-║  connect <host> [port]  - Connect to server                  ║
-║  login <user> <pass>    - Authenticate                       ║
-║  type <A|I>             - Set ASCII or Binary mode           ║
-║  port                   - Enable active (PORT) mode          ║
-║  pasv                   - Enable passive (PASV) mode         ║
-║  upload <local> [remote]- Upload file (with hash verify)     ║
-║  download <remote> <local>- Download file (with hash verify) ║
-║  ls [path]              - List directory                     ║
-║  cd <path>              - Change directory                   ║
-║  pwd                    - Print working directory            ║
-║  hash <file>            - Get server file hash               ║
-║  quit                   - Disconnect and exit                ║
-║  help                   - Show this help                     ║
-╚══════════════════════════════════════════════════════════════╝
+╔═════════════════════════════════════════════════════════════════╗
+║                         HYBRID FTP CLIENT                       ║
+╠═════════════════════════════════════════════════════════════════╣
+║  connect <host> [port]     - Connect to server                  ║
+║  login <user> <pass>       - Authenticate                       ║
+║  type <A|I>                - Set ASCII or Binary mode           ║
+║  port                      - Enable active (PORT) mode          ║
+║  pasv                      - Enable passive (PASV) mode         ║
+║  upload <local> [remote]   - Upload file (with hash verify)     ║
+║  download <remote> <local> - Download file (with hash verify)   ║
+║  ls [path]                 - List directory                     ║
+║  cd <path>                 - Change directory                   ║
+║  pwd                       - Print working directory            ║
+║  hash <file>               - Get server file hash               ║
+║  quit                      - Disconnect and exit                ║
+║  help                      - Show this help                     ║
+╚═════════════════════════════════════════════════════════════════╝
 """)
 
 
