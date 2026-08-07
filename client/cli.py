@@ -11,7 +11,7 @@ from client.client import HybridFTPClient
 def print_help():
     print("""
 ╔══════════════════════════════════════════════════════════════╗
-║           HYBRID FTP CLIENT - SANG'S MODULES                 ║
+║                      HYBRID FTP CLIENT                       ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  connect <host> [port]  - Connect to server                  ║
 ║  login <user> <pass>    - Authenticate                       ║
@@ -35,7 +35,7 @@ def main():
     mode = "PORT"
 
     print("=" * 60)
-    print("  HYBRID FTP CLIENT - Sang's Implementation")
+    print("  HYBRID FTP CLIENT - Implementation")
     print("  Features: PORT | TYPE | HASH Verify | Reliable UDP")
     print("=" * 60)
 
