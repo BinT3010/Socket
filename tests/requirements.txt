@@ -1,0 +1,2 @@
+# Hybrid FTP - No external dependencies required
+# Pure Python 3.10+ standard library only
