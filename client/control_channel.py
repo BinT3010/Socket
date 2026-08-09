@@ -74,24 +74,19 @@ class ControlChannel:
 
     def _recv_reply(self) -> str:
         """Receive multi-line FTP reply."""
-        data = b""
-        while True:
+        while b"\r\n" not in self._buffer:
             try:
                 chunk = self.sock.recv(4096)
-                if not chunk:
-                    break
-                data += chunk
-                # Check if reply is complete (ends with \r\n and code followed by space)
-                lines = data.decode("utf-8", errors="replace").split("\r\n")
-                if len(lines) >= 2:
-                    last_line = lines[-2]
-                    if len(last_line) >= 4 and last_line[3] == " ":
-                        break
-            except socket.timeout:
-                break
-            except Exception:
-                break
-        return data.decode("utf-8", errors="replace").strip()
+            except (socket.timeout, OSError):
+                chunk = b""
+            if not chunk:
+                reply_text = self._buffer.decode("utf-8", errors="replace").strip()
+                self._buffer = b""
+                return reply_text
+            self._buffer += chunk
+ 
+        line, self._buffer = self._buffer.split(b"\r\n", 1)
+        return line.decode("utf-8", errors="replace").strip()
 
     def get_reply_code(self, reply: str) -> str:
         if reply and len(reply) >= 3:
