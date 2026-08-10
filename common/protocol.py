@@ -61,7 +61,7 @@ UDP_HEADER_SIZE = struct.calcsize(UDP_HEADER_FORMAT)
 UDP_MAX_PAYLOAD = 1024  # bytes per packet
 UDP_PACKET_SIZE = UDP_HEADER_SIZE + UDP_MAX_PAYLOAD
 
-class Packet:
+class UDPPacket:
     FLAG_SYN = 0x01
     FLAG_ACK = 0x02
     FLAG_FIN = 0x04
