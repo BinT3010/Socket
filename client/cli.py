@@ -96,23 +96,15 @@ def main():
                 if not client:
                     print("Not connected")
                     continue
-                reply = client.control.send_cmd("PORT")
-                print(reply)
-
-                if reply.startswith("227"):
-                    mode = "PORT"
-                    print("[CLI] Mode set to PORT (active)")
+                mode = "PORT"
+                print("[CLI] Mode set to PORT (active)")
 
             elif action == "pasv":
                 if not client:
                     print("Not connected")
                     continue
-                reply = client.control.send_cmd("PASV")
-                print(reply)
-
-                if reply.startswith("227"):
-                    mode = "PASV"
-                    print("[CLI] Mode set to PASV (passive)")
+                mode = "PASV"
+                print("[CLI] Mode set to PASV (active)")
 
             elif action == "upload" or action == "stor":
                 if not client:
@@ -139,7 +131,7 @@ def main():
                     print("Not connected.")
                     continue
                 path = parts[1] if len(parts) > 1 else ""
-                print(client.list_dir(path))
+                print(client.list_dir(path,mode))
 
             elif action == "cd" or action == "cwd":
                 if not client:
