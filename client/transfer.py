@@ -178,10 +178,6 @@ class TransferManager:
         elapsed = time.time() - start
         self.data.close()
 
-        if not file_data:
-            print("[Transfer] Download failed (no data received).")
-            return False
-
         # Same reason as in stor(): drain the server's post-transfer
         # completion reply before issuing the next control command.
         completion_reply = self.control.read_reply()
