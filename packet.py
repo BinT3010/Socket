@@ -50,19 +50,28 @@ class Packet:
     
     @staticmethod
     def from_bytes(raw_data):
-        # Đọc header
+        if len(raw_data) < HEADER_SIZE:
+            raise ValueError(
+                f"Packet quá ngắn: nhận {len(raw_data)} bytes, "
+                f"cần ít nhất {HEADER_SIZE} bytes"
+            )
+
         checksum, packet_type, seq, length = struct.unpack(
             HEADER_FORMAT,
             raw_data[:HEADER_SIZE]
         )
 
-        # Lấy phần data
+        # Kiểm tra packet có đủ phần data theo length không
+        if len(raw_data) < HEADER_SIZE + length:
+            raise ValueError(
+                f"Packet không đầy đủ: header={HEADER_SIZE}, "
+                f"data cần={length}, nhận={len(raw_data) - HEADER_SIZE}"
+            )
+
         data = raw_data[HEADER_SIZE:HEADER_SIZE + length]
 
-        # Tạo packet
         packet = Packet(packet_type, seq, data)
 
-        # Kiểm tra checksum
         header = struct.pack(
             HEADER_FORMAT,
             0,
