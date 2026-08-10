@@ -15,6 +15,7 @@ class ControlChannel:
         self.lock = threading.Lock()
         self.connected = False
         self.last_reply = ""
+        self._buffer = b""
 
     def connect(self) -> bool:
         try:
