@@ -205,6 +205,7 @@ def cmd_stat(session, args):
 # ---------------------------------------------------------------------
 # NEW -- TYPE command
 # ---------------------------------------------------------------------
+
 def cmd_type(session, args):
     if not args or args[0].upper() not in ("A", "I"):
         reply(session.conn, "SYNTAX_ERR")
@@ -216,6 +217,7 @@ def cmd_type(session, args):
 # ---------------------------------------------------------------------
 # NEW -- HASH command: SHA-256 integrity check
 # ---------------------------------------------------------------------
+
 def cmd_hash(session, args):
     if not args:
         reply(session.conn, "SYNTAX_ERR")
@@ -261,7 +263,7 @@ def cmd_list(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.recv()
+        _, client_addr = session.rdt.sock.recvfrom(2048)
     send_bytes_via_rdt(session.rdt, content, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
@@ -282,7 +284,7 @@ def cmd_nlst(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.recv()
+        _, client_addr = session.rdt.sock.recvfrom(2048)
     send_bytes_via_rdt(session.rdt, content, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
@@ -291,6 +293,7 @@ def cmd_nlst(session, args):
 # ---------------------------------------------------------------------
 # PASV -- Passive mode (server opens the port)
 # ---------------------------------------------------------------------
+
 def cmd_pasv(session, args):
     _close_data_channel(session)
 
@@ -311,6 +314,7 @@ def cmd_pasv(session, args):
 # address; server already knows client_addr, so RETR/LIST skip the
 # recv()-first handshake needed in Passive mode)
 # ---------------------------------------------------------------------
+
 def cmd_port(session, args):
     if not args:
         reply(session.conn, "SYNTAX_ERR")
@@ -362,7 +366,7 @@ def cmd_retr(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.recv()
+        _, client_addr = session.rdt.sock.recvfrom(2048)
     session.rdt.send_file_reliable(target, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
