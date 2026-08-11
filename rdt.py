@@ -75,8 +75,8 @@ class RDT:
             try:
                 packet = Packet.from_bytes(raw_data)
                 return packet, addr
-            except ValueError:
-                print("[ERROR] Invalid checksum. Packet discarded.")
+            except ValueError as e:
+                print("[ERROR] Invalid packet: {e}")
 
     def _wait_ack(self):
 

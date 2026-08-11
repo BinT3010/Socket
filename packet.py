@@ -50,6 +50,7 @@ class Packet:
     
     @staticmethod
     def from_bytes(raw_data):
+        # Đọc header
         if len(raw_data) < HEADER_SIZE:
             raise ValueError(
                 f"Packet quá ngắn: nhận {len(raw_data)} bytes, "
@@ -60,7 +61,7 @@ class Packet:
             HEADER_FORMAT,
             raw_data[:HEADER_SIZE]
         )
-
+        # Lấy phần data
         # Kiểm tra packet có đủ phần data theo length không
         if len(raw_data) < HEADER_SIZE + length:
             raise ValueError(

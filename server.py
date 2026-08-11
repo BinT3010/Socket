@@ -1,5 +1,5 @@
 """
-Server - Final Week
+Server 
 Member: Dung (Server & TCP Control Channel)
 
 Builds on server_week3_tan.py. Adds:
@@ -77,10 +77,17 @@ def _close_data_channel(session):
 
 
 def cmd_user(session, args):
+    if not args:
+        reply(session, "SYNTAX_ERR")
+        return
     session.username = args[0] if args else None
     reply(session.conn, "USER_OK")
 
 def cmd_pass(session, args):
+    if not args:
+        reply(session, "SYNTAX_ERR")
+        return
+
     session.authenticated = True
     reply(session.conn, "LOGIN_OK")
 
