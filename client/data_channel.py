@@ -73,7 +73,7 @@ class DataChannel:
     def recv_reliable(self) -> bytes:
         """Receive all data reliably using Tan's Stop-and-Wait RDT."""
         if self._need_hello:
-            self.rdt.sock.sendto(b"", self.send_addr)
+            self.rdt.send(b"", self.send_addr)
 
         buffer = bytearray()
         while True:
