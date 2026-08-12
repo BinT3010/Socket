@@ -21,6 +21,30 @@ class HybridFTPClient:
         print(f"[Client] Server says: {self.control.last_reply}")
         return True
 
+    def user(self, username: str) -> bool:
+        self.logged_in = False   
+        reply = self.control.send_cmd(f"USER {username}")
+
+        print(reply)
+        
+        if self.control.get_reply_code(reply) == ReplyCode.USERNAME_OK:
+            return True
+
+        print(f"[Client] USER failed: {reply}")
+        return False
+
+    def pass_(self, password: str) -> bool:
+        reply = self.control.send_cmd(f"PASS {password}")
+
+        if self.control.get_reply_code(reply) == ReplyCode.LOGIN_SUCCESS:
+            self.logged_in = True
+            print("[Client]", reply)
+            return True
+
+        self.logged_in = False
+        print(f"[Client] PASS failed: {reply}")
+        return False
+
     def login(self, username: str, password: str) -> bool:
         reply = self.control.send_cmd(f"USER {username}")
         if self.control.get_reply_code(reply) == ReplyCode.USERNAME_OK:
@@ -31,7 +55,7 @@ class HybridFTPClient:
                 return True
         print(f"[Client] Login failed: {reply}")
         return False
-
+    
     def quit(self):
         self.control.send_cmd("QUIT")
         self.control.disconnect()
