@@ -52,6 +52,7 @@ class Session:
         self.root_dir = os.path.abspath(root_dir)
         self.cwd = "/"
         self.username = None
+        self.password = None
         self.authenticated = False
         self.transfer_type = "A"
         self.rename_from = None
@@ -80,6 +81,8 @@ def cmd_user(session, args):
     if not args:
         reply(session.conn, "SYNTAX_ERR")
         return
+
+    session.authenticated = False
     session.username = args[0] if args else None
     reply(session.conn, "USER_OK")
 
@@ -89,6 +92,7 @@ def cmd_pass(session, args):
         return
 
     session.authenticated = True
+    session.password = args[0] if args else None
     reply(session.conn, "LOGIN_OK")
 
 def cmd_pwd(session, args):
