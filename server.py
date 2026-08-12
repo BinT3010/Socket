@@ -274,7 +274,7 @@ def cmd_list(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.sock.recvfrom(2048)
+        _, client_addr = session.rdt.recv()
     send_bytes_via_rdt(session.rdt, content, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
@@ -295,7 +295,7 @@ def cmd_nlst(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.sock.recvfrom(2048)
+        _, client_addr = session.rdt.recv()
     send_bytes_via_rdt(session.rdt, content, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
@@ -377,7 +377,7 @@ def cmd_retr(session, args):
     if session.data_mode == "PORT":
         client_addr = session.client_data_addr
     else:
-        _, client_addr = session.rdt.sock.recvfrom(2048)
+        _, client_addr = session.rdt.recv()
     session.rdt.send_file_reliable(target, client_addr)
     reply(session.conn, "TRANSFER_OK")
     _close_data_channel(session)
